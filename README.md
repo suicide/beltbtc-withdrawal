@@ -1,66 +1,31 @@
-## Foundry
+## beltBTC withdrawal test
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+beltBTC withdrawals are currently not working due to a change in ForTube that 
+disabled BTC deposits.
 
-Foundry consists of:
+The change tx: https://bscscan.com/tx/0x127b610d83757c330810c877c754c27ced15ca187b25a9a129dbe12cb1e0a8ac
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+beltBTC seems to try to rebalance while executing a withdrawal. Consequently,
+withdrawal transactions fail due to a revert from ForTube Bank.
 
-## Documentation
+Example of a failing tx: https://bscscan.com/tx/0xd7177c3f4d29f32e3c838f64baed516b85876a07f60b83bafa93b3192aa79a21
 
-https://book.getfoundry.sh/
+The `Belt.t.sol` test showcases that if ForTube re-enables deposits for BTC,
+users of beltBTC can withdraw their funds again.
 
-## Usage
+Since the Belt team seems to be dormant, a quick solution for the current
+situation would be for ForTube to re-enable BTC deposits.
 
-### Build
+### Execute the test
+
+Run a fork of BNB chain
 
 ```shell
-$ forge build
+anvil --fork-url https://bsc.drpc.org
 ```
 
-### Test
+Run the tests agains the local BNB fork
 
 ```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+forge test -vvv --rpc-url http://127.0.0.1:8545/
 ```

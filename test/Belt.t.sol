@@ -23,6 +23,17 @@ contract BeltTest is Test {
       btc = IERC20(btcAddress);
     }
 
+    function test_withdraw_fail() public {
+
+      // previously failed tx
+      // 0xd7177c3f4d29f32e3c838f64baed516b85876a07f60b83bafa93b3192aa79a21
+      vm.startPrank(sender);
+      // the withdrawal will fail without re-enabling BTC deposits
+      vm.expectRevert();
+      beltBtc.withdraw(119787542064703475, 122500000000000000);
+
+    }
+
     function test_withdraw() public {
       // deposits were previously disabled
       // 0x127b610d83757c330810c877c754c27ced15ca187b25a9a129dbe12cb1e0a8ac
